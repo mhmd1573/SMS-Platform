@@ -133,8 +133,8 @@ class Sidebar extends Component {
 
            {/* Analysis Section Starts Here */}
 
-           <li className={ this.isPathActive('/dashboard') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <Link className="nav-link" to="/dashboard">
+           <li className={ this.isPathActive('/analysis') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <Link className="nav-link" to="/analysis">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faMagnifyingGlassChart} size="x" style={{ color: 'red' }} />
                 </span>

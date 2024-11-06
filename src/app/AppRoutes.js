@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Spinner from './components/Spinner';
 
-const Dashboard = lazy(() => import('./dashboard/Dashboard'));
+const Analysis = lazy(() => import('./analysis/Analysis'));
 
 const Buttons = lazy(() => import('./basic/Buttons'));
 const Dropdowns = lazy(() => import('./basic/Dropdowns'));
@@ -29,7 +29,7 @@ class AppRoutes extends Component {
     return (
       <Suspense fallback={<Spinner/>}>
         <Switch>
-          <Route exact path="/dashboard" component={ Dashboard } />
+          <Route exact path="/analysis" component={ Analysis } />
 
           <Route path="/basic-ui/buttons" component={ Buttons } />
           <Route path="/basic-ui/dropdowns" component={ Dropdowns } />

@@ -3,6 +3,11 @@
 /* === Plugin styles === */
 
 
+@import "~primereact/resources/themes/lara-light-indigo/theme.css"; /* Optional, for theme */
+@import "~primereact/resources/primereact.min.css"; /* Essential for styling PrimeReact components */
+
+
+
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
 
