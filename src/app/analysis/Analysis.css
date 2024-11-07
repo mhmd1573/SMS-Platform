@@ -1,53 +1,53 @@
-/* Analysis.css */
+/* Analysis.css
 
 /* Overall table style */
-.custom-table .ant-table {
+/* .custom-table .ant-table {
     font-size: 14px;
     color: #333;
-  }
+  } */
   
   /* Header row */
-  .custom-table .ant-table-thead > tr > th {
+  /* .custom-table .ant-table-thead > tr > th {
     background-color: #f5f5f5;
     font-weight: 600;
     font-size: 10px;
     padding: 0px 35px;
     text-align: center;
     border-bottom: 1px solid #ddd;
-  }
+  } */
   
   /* Body rows */
-  .custom-table .ant-table-tbody > tr > td {
+  /* .custom-table .ant-table-tbody > tr > td {
     padding: 0px 0px;
     border-bottom: 1px solid #eee;
     text-align: center;
     white-space: nowrap; /* Prevents text from wrapping */
-  }
-  
+  /* } */
+   
   /* Hover effect on rows */
-  .custom-table .ant-table-tbody > tr:hover > td {
+  /* .custom-table .ant-table-tbody > tr:hover > td {
     background-color: #fafafa;
-  }
+  } */
   
   /* Style for text alignment in specific columns */
-  .custom-table .ant-table-cell {
+  /* .custom-table .ant-table-cell {
     text-align: center;
     padding: 8px;
-  }
+  } */
   
   /* Thinner borders for a cleaner look */
-  .custom-table .ant-table-thead > tr > th,
+  /* .custom-table .ant-table-thead > tr > th,
   .custom-table .ant-table-tbody > tr > td {
     border-right: 1px solid #ddd;
-  }
+  } */
   
-  .custom-table .ant-table-tbody > tr:last-child > td {
+  /* .custom-table .ant-table-tbody > tr:last-child > td {
     border-bottom: none;
   }
-  
+   */
   /* Adjust pagination style if desired */
-  .custom-table .ant-pagination {
+  /* .custom-table .ant-pagination {
     margin-top: 16px;
     text-align: center;
-  }
-  
+  } */
+   /* */ 

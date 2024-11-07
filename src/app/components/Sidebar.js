@@ -39,13 +39,15 @@ class Sidebar extends Component {
 
     const dropdownPaths = [
       {path:'/apps', state: 'appsMenuOpen'},
-      {path:'/basic-ui', state: 'basicUiMenuOpen'},
-      {path:'/form-elements', state: 'formElementsMenuOpen'},
+      {path:'/carriers', state: 'carrierMenuOpen'},
+      {path:'/rates', state: 'ratesMenuOpen'},
       {path:'/tables', state: 'tablesMenuOpen'},
       {path:'/icons', state: 'iconsMenuOpen'},
-      {path:'/charts', state: 'chartsMenuOpen'},
-      {path:'/user-pages', state: 'userPagesMenuOpen'},
+      {path:'/route', state: 'routeMenuOpen'},
+      {path:'/finance', state: 'FinanceMenuOpen'},
       {path:'/error-pages', state: 'errorPagesMenuOpen'},
+      {path:'/analysis', state: 'analysisMenuOpen'},
+  
     ];
 
     dropdownPaths.forEach((obj => {
@@ -131,39 +133,49 @@ class Sidebar extends Component {
           </li>
 
 
+
+
+
            {/* Analysis Section Starts Here */}
 
            <li className={ this.isPathActive('/analysis') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <Link className="nav-link" to="/analysis">
+            <div className={ this.state.analysisMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('analysisMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
-                <FontAwesomeIcon icon={faMagnifyingGlassChart} size="x" style={{ color: 'red' }} />
-                </span>
+              <FontAwesomeIcon icon={faMagnifyingGlassChart} size="x" style={{ color: 'red' }} />
+              </span>
               <span className="menu-title"><Trans>Analysis</Trans></span>
-            </Link>
-           </li>
+              <i className="menu-arrow"></i>
+            </div>
+            <Collapse in={ this.state.analysisMenuOpen }>
+              <div>
+                <ul className="nav flex-column sub-menu">
+                  <li className="nav-item"> <Link className={ this.isPathActive('/analysis/sms') ? 'nav-link active' : 'nav-link' } to="/analysis/sms"><Trans>SMS</Trans></Link></li>
+                </ul>
+              </div>
+            </Collapse>
+          </li>
 
            {/* Analysis Section Ends Here */}  
 
 
 
-
-
+   
 
 
            {/* Carrier Section Starts Here*/}
 
-          <li className={ this.isPathActive('/basic-ui') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.basicUiMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('basicUiMenuOpen') } data-toggle="collapse">
+          <li className={ this.isPathActive('/carrier') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ this.state.carrierMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('carrierMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faUsers} size="x" style={{ color: 'white' }} />
               </span>
               <span className="menu-title"><Trans>Carriers</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.basicUiMenuOpen }>
+            <Collapse in={ this.state.carrierMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/basic-ui/buttons') ? 'nav-link active' : 'nav-link' } to="/basic-ui/buttons"><Trans>Carriers List</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/carriers/carriersList') ? 'nav-link active' : 'nav-link' } to="/carriers/carriersList"><Trans>Carriers List</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>
@@ -180,21 +192,21 @@ class Sidebar extends Component {
 
            {/* Rates Section Starts*/}
 
-           <li className={ this.isPathActive('/form-elements') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.formElementsMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('formElementsMenuOpen') } data-toggle="collapse">
+           <li className={ this.isPathActive('/rates') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ this.state.ratesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('ratesMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faDollarSign}  size="x" style={{ color: 'green' }}/>
               </span>
               <span className="menu-title"><Trans>Rates</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.formElementsMenuOpen }>
+            <Collapse in={ this.state.ratesMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/form-elements/basic-elements') ? 'nav-link active' : 'nav-link' } to="/rates/basic-elements"><Trans>Auto Rate Import</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/form-elements/basic-elements') ? 'nav-link active' : 'nav-link' } to="/form-elements/basic-elements"><Trans>Rate Editor</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/form-elements/basic-elements') ? 'nav-link active' : 'nav-link' } to="/form-elements/basic-elements"><Trans>Rate Export</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/form-elements/basic-elements') ? 'nav-link active' : 'nav-link' } to="/form-elements/basic-elements"><Trans>Rate Compilation</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/rates/autoRateImport') ? 'nav-link active' : 'nav-link' } to="/rates/autoRateImport"><Trans>Auto Rate Import</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateCompilation') ? 'nav-link active' : 'nav-link' } to="/rates/rateCompilation"><Trans>Rate Compilation</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateEditor') ? 'nav-link active' : 'nav-link' } to="/rates/rateEditor"><Trans>Rate Editor</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateExport') ? 'nav-link active' : 'nav-link' } to="/rates/rateExport"><Trans>Rate Export</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>
@@ -240,22 +252,22 @@ class Sidebar extends Component {
 
            {/* Routing Section Starts Here*/}
 
-          <li className={ this.isPathActive('/charts') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.chartsMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('chartsMenuOpen') } data-toggle="collapse">
+          <li className={ this.isPathActive('/route') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ this.state.routeMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('routeMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faRoute} size="x" style={{ color: 'red' }} />
               </span>
               <span className="menu-title"><Trans>Routing</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.chartsMenuOpen }>
+            <Collapse in={ this.state.routeMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/charts/chart-js') ? 'nav-link active' : 'nav-link' } to="/charts/chart-js"><Trans>Routing Features</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/charts/chart-js') ? 'nav-link active' : 'nav-link' } to="/charts/chart-js"><Trans>Routing Rules</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/charts/chart-js') ? 'nav-link active' : 'nav-link' } to="/charts/chart-js"><Trans>Routing Statistics</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/charts/chart-js') ? 'nav-link active' : 'nav-link' } to="/charts/chart-js"><Trans>Simulation</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/charts/chart-js') ? 'nav-link active' : 'nav-link' } to="/charts/chart-js"><Trans>Translation Rules</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/route/routingFeatures') ? 'nav-link active' : 'nav-link' } to="/route/routingFeatures"><Trans>Routing Features</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/route/routingRules') ? 'nav-link active' : 'nav-link' } to="/route/routingRules"><Trans>Routing Rules</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/route/routingStatistics') ? 'nav-link active' : 'nav-link' } to="/route/routingStatistics"><Trans>Routing Statistics</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/route/simulation') ? 'nav-link active' : 'nav-link' } to="/route/simulation"><Trans>Simulation</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/route/translationRules') ? 'nav-link active' : 'nav-link' } to="/route/translationRules"><Trans>Translation Rules</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>
@@ -298,29 +310,29 @@ class Sidebar extends Component {
 
 
 
-           {/* Billings Section Starts Here */}
+           {/* Finance Section Starts Here */}
 
-           <li className={ this.isPathActive('/user-pages') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.userPagesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('userPagesMenuOpen') } data-toggle="collapse">
+           <li className={ this.isPathActive('/finance') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ this.state.FinanceMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('FinanceMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faMoneyBill} size="x" style={{ color: 'green' }} />
               </span>
               <span className="menu-title"><Trans>Finance</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.userPagesMenuOpen }>
+            <Collapse in={ this.state.FinanceMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/user-pages/register-1') ? 'nav-link active' : 'nav-link' } to="/user-pages/register-1"><Trans>Charges</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/user-pages/register-1') ? 'nav-link active' : 'nav-link' } to="/user-pages/register-1"><Trans>Invoices</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/user-pages/register-1') ? 'nav-link active' : 'nav-link' } to="/user-pages/register-1"><Trans>Payments</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/user-pages/register-1') ? 'nav-link active' : 'nav-link' } to="/user-pages/register-1"><Trans>Recurring fees</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/finance/charges') ? 'nav-link active' : 'nav-link' } to="/finance/charges"><Trans>Charges</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/finance/invoice') ? 'nav-link active' : 'nav-link' } to="/finance/invoice"><Trans>Invoice</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/finance/payments') ? 'nav-link active' : 'nav-link' } to="/finance/payments"><Trans>Payments</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/finance/fees') ? 'nav-link active' : 'nav-link' } to="/finance/fees"><Trans>Recurring Fees</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>
            </li>
 
-           {/* Billings Section Ends Here */}
+           {/* Finance Section Ends Here */}
 
 
 
