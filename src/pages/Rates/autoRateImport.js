@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-export class autoRateImport extends Component {
+export class AutoRateImport extends Component {
 
   render() {
     return (
@@ -26,4 +26,4 @@ export class autoRateImport extends Component {
   }
 }
 
-export default autoRateImport
+export default AutoRateImport

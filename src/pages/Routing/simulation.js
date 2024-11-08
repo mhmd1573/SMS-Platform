@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-export class simulation extends Component {
+export class Simulation extends Component {
 
   render() {
     return (
@@ -26,4 +26,4 @@ export class simulation extends Component {
   }
 }
 
-export default simulation
+export default Simulation

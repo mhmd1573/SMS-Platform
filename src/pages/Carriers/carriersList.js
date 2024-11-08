@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-export class carriersList extends Component {
+export class CarriersList extends Component {
 
   render() {
     return (
@@ -26,4 +26,4 @@ export class carriersList extends Component {
   }
 }
 
-export default carriersList
+export default CarriersList

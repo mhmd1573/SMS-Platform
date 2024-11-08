@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-export class routingFeatures extends Component {
+export class RoutingFeatures extends Component {
 
   render() {
     return (
@@ -26,4 +26,4 @@ export class routingFeatures extends Component {
   }
 }
 
-export default routingFeatures
+export default RoutingFeatures

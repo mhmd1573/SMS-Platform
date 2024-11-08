@@ -41,7 +41,7 @@ class Sidebar extends Component {
       {path:'/apps', state: 'appsMenuOpen'},
       {path:'/carriers', state: 'carrierMenuOpen'},
       {path:'/rates', state: 'ratesMenuOpen'},
-      {path:'/tables', state: 'tablesMenuOpen'},
+      {path:'/suppliers', state: 'supplierMenuOpen'},
       {path:'/icons', state: 'iconsMenuOpen'},
       {path:'/route', state: 'routeMenuOpen'},
       {path:'/finance', state: 'FinanceMenuOpen'},
@@ -223,8 +223,8 @@ class Sidebar extends Component {
 
            {/* Suppliers Section Starts Here*/}
 
-          <li className={ this.isPathActive('/tables') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.tablesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('tablesMenuOpen') } data-toggle="collapse">
+          <li className={ this.isPathActive('/suppliers') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ this.state.supplierMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('supplierMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faTruckField} size="x" style={{ color: 'yellow' }}/>
                 <i className="fa-solid fa-house"></i>
@@ -232,10 +232,10 @@ class Sidebar extends Component {
               <span className="menu-title"><Trans>Suppliers</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.tablesMenuOpen }>
+            <Collapse in={ this.state.supplierMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/tables/basic-table') ? 'nav-link active' : 'nav-link' } to="/tables/basic-table"><Trans>Basic Table</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/suppliers/supplier') ? 'nav-link active' : 'nav-link' } to="/suppliers/supplier"><Trans>Supplier</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>

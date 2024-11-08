@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-export class rateEditor extends Component {
+export class RateEditor extends Component {
 
   render() {
     return (
@@ -26,4 +26,4 @@ export class rateEditor extends Component {
   }
 }
 
-export default rateEditor
+export default RateEditor

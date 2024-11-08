@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-export class invoice extends Component {
+export class Invoice extends Component {
 
   render() {
     return (
@@ -26,4 +26,4 @@ export class invoice extends Component {
   }
 }
 
-export default invoice
+export default Invoice

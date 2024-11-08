@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-export class translationRules extends Component {
+export class TranslationRules extends Component {
 
   render() {
     return (
@@ -26,4 +26,4 @@ export class translationRules extends Component {
   }
 }
 
-export default translationRules
+export default TranslationRules

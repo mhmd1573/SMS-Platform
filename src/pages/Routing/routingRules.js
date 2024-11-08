@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-export class routingRules extends Component {
+export class RoutingRules extends Component {
 
   render() {
     return (
@@ -26,4 +26,4 @@ export class routingRules extends Component {
   }
 }
 
-export default routingRules
+export default RoutingRules

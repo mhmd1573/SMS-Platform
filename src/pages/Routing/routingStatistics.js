@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-export class routingStatistics extends Component {
+export class RoutingStatistics extends Component {
 
   render() {
     return (
@@ -26,4 +26,4 @@ export class routingStatistics extends Component {
   }
 }
 
-export default routingStatistics
+export default RoutingStatistics

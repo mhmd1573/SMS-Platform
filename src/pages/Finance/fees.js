@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 
-export class fees extends Component {
+export class Fees extends Component {
 
   render() {
     return (
@@ -26,4 +26,4 @@ export class fees extends Component {
   }
 }
 
-export default fees
+export default Fees
