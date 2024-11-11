@@ -204,6 +204,7 @@ class Sidebar extends Component {
               <div>
                 <ul className="nav flex-column sub-menu">
                   <li className="nav-item"> <Link className={ this.isPathActive('/rates/autoRateImport') ? 'nav-link active' : 'nav-link' } to="/rates/autoRateImport"><Trans>Auto Rate Import</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateImport') ? 'nav-link active' : 'nav-link' } to="/rates/rateImport"><Trans>Rate Import</Trans></Link></li>
                   <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateCompilation') ? 'nav-link active' : 'nav-link' } to="/rates/rateCompilation"><Trans>Rate Compilation</Trans></Link></li>
                   <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateEditor') ? 'nav-link active' : 'nav-link' } to="/rates/rateEditor"><Trans>Rate Editor</Trans></Link></li>
                   <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateExport') ? 'nav-link active' : 'nav-link' } to="/rates/rateExport"><Trans>Rate Export</Trans></Link></li>

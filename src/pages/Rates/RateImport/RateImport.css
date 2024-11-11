@@ -1,0 +1,155 @@
+/* .parent{
+    width: 100%;
+    height: 600px;
+    border: 1px solid white;
+    display: flex;
+}
+
+
+.child1{
+    border: 1px solid red;
+    width: 60%;
+    height: 100%;
+}
+
+.child3{
+    width: 100%;
+    height: 300px;
+    border: 1px solid white;
+} */
+
+
+
+
+
+/* General container for Rate Import page */
+.rate-import-container {
+    padding: 20px;
+  }
+  
+  .page-header {
+    margin-bottom: 20px;
+  }
+  
+  .breadcrumb {
+    background-color: transparent;
+  }
+  
+  .parent {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    color: black;
+    width: 100%;
+  }
+  
+  /* Child1 - Import History (left grid) */
+  .child1 {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    width: 80%;
+  }
+
+
+  .file-input{
+    font-size: 14px;
+    margin-left: 5px;
+    padding-left: 5px;
+    height: 25px;
+}
+  
+  
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+
+
+
+  .history-table th, .history-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: 13px;
+    text-align: center;
+  }
+
+
+
+  .history-table tr:hover {
+    background-color: #f5f5f5; /* Light gray background on hover */
+    cursor: pointer;
+  }
+  
+  .history-table tr.selected {
+    background-color: #e0e0e0; /* Highlight selected row */
+  }
+
+
+  
+  /* Child2 - Advanced Options Form (middle grid) */
+  .child2 {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    width: 40%;
+  }
+  
+  .child2 h4{
+    margin-bottom: 30px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+  }
+  
+  form select,
+  form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+  }
+  
+  /* Child3 - Result Section (bottom grid) */
+  .child3 {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-top: 30px;
+    color: black;
+  }
+  
+  .submit-button {
+    /* background-color: #4caf50; */
+    background-color: #141d34;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #45a049;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+

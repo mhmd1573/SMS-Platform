@@ -11,6 +11,7 @@ const CarriersList = lazy(() => import('./pages/Carriers/CarriersList'));
 
 
 const AutoRateImport = lazy(() => import('./pages/Rates/AutoRateImport'));
+const RateImport = lazy(() => import('./pages/Rates/RateImport/RateImport'));
 const RateCompilation = lazy(() => import('./pages/Rates/RateCompilation'));
 const RateEditor = lazy(() => import('./pages/Rates/RateEditor'));
 const RateExport = lazy(() => import('./pages/Rates/RateExport'));
@@ -54,6 +55,7 @@ class AppRoutes extends Component {
           <Route path="/analysis/sms" component={ SMS } />
 
           <Route path="/rates/autoRateImport" component={ AutoRateImport } />
+          <Route path="/rates/rateImport" component={ RateImport } />
           <Route path="/rates/rateCompilation" component={ RateCompilation } />
           <Route path="/rates/rateEditor" component={ RateEditor } />
           <Route path="/rates/rateExport" component={ RateExport } />

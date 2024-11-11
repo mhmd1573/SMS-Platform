@@ -265,7 +265,6 @@ const ProgressCell = ({ value, max, colorVariant }) => (
           ))}
         </tbody>
 
-
       </Table>
 
     </div>
