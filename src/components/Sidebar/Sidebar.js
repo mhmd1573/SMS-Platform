@@ -1,64 +1,84 @@
-import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+
+import { Link,  useNavigate, useLocation } from 'react-router-dom';
 import { Collapse, Dropdown } from 'react-bootstrap';
 import { Trans } from 'react-i18next';
-
+import React, { useState, useEffect } from 'react';
 // Import FontAwesomeIcon and specific icons
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlassChart , faDollarSign , faUsers , faTruckField, faRoute , faFile, faMoneyBill} from '@fortawesome/free-solid-svg-icons';
 
 
-class Sidebar extends Component {
+const Sidebar = () => {
 
-  state = {};
 
-  toggleMenuState(menuState) {
-    if (this.state[menuState]) {
-      this.setState({[menuState] : false});
-    } else if(Object.keys(this.state).length === 0) {
-      this.setState({[menuState] : true});
-    } else {
-      Object.keys(this.state).forEach(i => {
-        this.setState({[i]: false});
-      });
-      this.setState({[menuState] : true}); 
-    }
-  }
+  const [menuState, setMenuState] = useState({});
+  const location = useLocation();
+  const navigate = useNavigate()
 
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      this.onRouteChanged();
-    }
-  }
 
-  onRouteChanged() {
+  const toggleMenuState = (menu) => {
+    setMenuState(prevState => ({
+      ...prevState,
+      [menu]: !prevState[menu]
+    }));
+  };
+
+  useEffect(() => {
+    onRouteChanged();
+  }, [location]);
+
+  
+
+  const onRouteChanged = () => {
     document.querySelector('#sidebar').classList.remove('active');
-    Object.keys(this.state).forEach(i => {
-      this.setState({[i]: false});
-    });
+    setMenuState({});
 
     const dropdownPaths = [
-      {path:'/apps', state: 'appsMenuOpen'},
-      {path:'/carriers', state: 'carrierMenuOpen'},
-      {path:'/rates', state: 'ratesMenuOpen'},
-      {path:'/suppliers', state: 'supplierMenuOpen'},
-      {path:'/icons', state: 'iconsMenuOpen'},
-      {path:'/route', state: 'routeMenuOpen'},
-      {path:'/finance', state: 'FinanceMenuOpen'},
-      {path:'/error-pages', state: 'errorPagesMenuOpen'},
-      {path:'/analysis', state: 'analysisMenuOpen'},
-  
+      { path: '/apps', state: 'appsMenuOpen' },
+      { path: '/carriers', state: 'carrierMenuOpen' },
+      { path: '/rates', state: 'ratesMenuOpen' },
+      { path: '/suppliers', state: 'supplierMenuOpen' },
+      { path: '/icons', state: 'iconsMenuOpen' },
+      { path: '/route', state: 'routeMenuOpen' },
+      { path: '/finance', state: 'FinanceMenuOpen' },
+      { path: '/error-pages', state: 'errorPagesMenuOpen' },
+      { path: '/analysis', state: 'analysisMenuOpen' },
     ];
 
-    dropdownPaths.forEach((obj => {
-      if (this.isPathActive(obj.path)) {
-        this.setState({[obj.state] : true})
+    dropdownPaths.forEach((obj) => {
+      if (isPathActive(obj.path)) {
+        setMenuState(prevState => ({
+          ...prevState,
+          [obj.state]: true
+        }));
       }
-    }));
- 
-  }
+    });
+  };
 
-  render () {
+
+  // componentDidMount() ;{
+  //   this.onRouteChanged();
+  //   // add class 'hover-open' to sidebar navitem while hover in sidebar-icon-only menu
+  //   const body = document.querySelector('body');
+  //   document.querySelectorAll('.sidebar .nav-item').forEach((el) => {
+      
+  //     el.addEventListener('mouseover', function() {
+  //       if(body.classList.contains('sidebar-icon-only')) {
+  //         el.classList.add('hover-open');
+  //       }
+  //     });
+  //     el.addEventListener('mouseout', function() {
+  //       if(body.classList.contains('sidebar-icon-only')) {
+  //         el.classList.remove('hover-open');
+  //       }
+  //     });
+  //   });
+  // }
+
+
+  const isPathActive = (path) => location.pathname.startsWith(path);
+
+  
     return (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
    
@@ -138,18 +158,22 @@ class Sidebar extends Component {
 
            {/* Analysis Section Starts Here */}
 
-           <li className={ this.isPathActive('/analysis') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.analysisMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('analysisMenuOpen') } data-toggle="collapse">
+           <li className={ isPathActive('/analysis') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ menuState.analysisMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => toggleMenuState('analysisMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
               <FontAwesomeIcon icon={faMagnifyingGlassChart} size="x" style={{ color: 'red' }} />
               </span>
               <span className="menu-title"><Trans>Analysis</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.analysisMenuOpen }>
+            <Collapse in={ menuState.analysisMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/analysis/sms') ? 'nav-link active' : 'nav-link' } to="/analysis/sms"><Trans>SMS</Trans></Link></li>
+                  <li className="nav-item"> 
+                    <Link className={ isPathActive('/analysis/sms') ? 'nav-link active' : 'nav-link' } to="/analysis/sms">
+                    <Trans>SMS</Trans>
+                    </Link>
+                    </li>
                 </ul>
               </div>
             </Collapse>
@@ -161,21 +185,23 @@ class Sidebar extends Component {
 
    
 
-
            {/* Carrier Section Starts Here*/}
 
-          <li className={ this.isPathActive('/carrier') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.carrierMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('carrierMenuOpen') } data-toggle="collapse">
+          <li className={ isPathActive('/carrier') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ menuState.carrierMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => toggleMenuState('carrierMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faUsers} size="x" style={{ color: 'white' }} />
               </span>
               <span className="menu-title"><Trans>Carriers</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.carrierMenuOpen }>
+            <Collapse in={ menuState.carrierMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/carriers/carriersList') ? 'nav-link active' : 'nav-link' } to="/carriers/carriersList"><Trans>Carriers List</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/carriers/carriersList') ? 'nav-link active' : 'nav-link' } to="/carriers/carriersList">
+                  <Trans>Carriers List</Trans>
+                  </Link>
+                  </li>
                 </ul>
               </div>
             </Collapse>
@@ -187,27 +213,24 @@ class Sidebar extends Component {
 
 
 
-
-
-
            {/* Rates Section Starts*/}
 
-           <li className={ this.isPathActive('/rates') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.ratesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('ratesMenuOpen') } data-toggle="collapse">
+           <li className={ isPathActive('/rates') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ menuState.ratesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => toggleMenuState('ratesMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faDollarSign}  size="x" style={{ color: 'green' }}/>
               </span>
               <span className="menu-title"><Trans>Rates</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.ratesMenuOpen }>
+            <Collapse in={ menuState.ratesMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/rates/autoRateImport') ? 'nav-link active' : 'nav-link' } to="/rates/autoRateImport"><Trans>Auto Rate Import</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateImport') ? 'nav-link active' : 'nav-link' } to="/rates/rateImport"><Trans>Rate Import</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateCompilation') ? 'nav-link active' : 'nav-link' } to="/rates/rateCompilation"><Trans>Rate Compilation</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateEditor') ? 'nav-link active' : 'nav-link' } to="/rates/rateEditor"><Trans>Rate Editor</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/rates/rateExport') ? 'nav-link active' : 'nav-link' } to="/rates/rateExport"><Trans>Rate Export</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/rates/autoRateImport') ? 'nav-link active' : 'nav-link' } to="/rates/autoRateImport"><Trans>Auto Rate Import</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/rates/import') ? 'nav-link active' : 'nav-link' } to="/rates/import"><Trans>Rate Import</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/rates/compilation') ? 'nav-link active' : 'nav-link' } to="/rates/compilation"><Trans>Rate Compilation</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/rates/editor') ? 'nav-link active' : 'nav-link' } to="/rates/editor"><Trans>Rate Editor</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/rates/export') ? 'nav-link active' : 'nav-link' } to="/rates/export"><Trans>Rate Export</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>
@@ -219,13 +242,10 @@ class Sidebar extends Component {
 
 
 
-
-
-
            {/* Suppliers Section Starts Here*/}
 
-          <li className={ this.isPathActive('/suppliers') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.supplierMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('supplierMenuOpen') } data-toggle="collapse">
+          <li className={ isPathActive('/suppliers') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ menuState.supplierMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => toggleMenuState('supplierMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faTruckField} size="x" style={{ color: 'yellow' }}/>
                 <i className="fa-solid fa-house"></i>
@@ -233,10 +253,10 @@ class Sidebar extends Component {
               <span className="menu-title"><Trans>Suppliers</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.supplierMenuOpen }>
+            <Collapse in={ menuState.supplierMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/suppliers/supplier') ? 'nav-link active' : 'nav-link' } to="/suppliers/supplier"><Trans>Supplier</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/suppliers/supplier') ? 'nav-link active' : 'nav-link' } to="/suppliers/supplier"><Trans>Supplier</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>
@@ -247,28 +267,24 @@ class Sidebar extends Component {
 
 
 
-
-
-
-
            {/* Routing Section Starts Here*/}
 
-          <li className={ this.isPathActive('/route') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.routeMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('routeMenuOpen') } data-toggle="collapse">
+          <li className={ isPathActive('/route') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ menuState.routeMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => toggleMenuState('routeMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faRoute} size="x" style={{ color: 'red' }} />
               </span>
               <span className="menu-title"><Trans>Routing</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.routeMenuOpen }>
+            <Collapse in={ menuState.routeMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/route/routingFeatures') ? 'nav-link active' : 'nav-link' } to="/route/routingFeatures"><Trans>Routing Features</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/route/routingRules') ? 'nav-link active' : 'nav-link' } to="/route/routingRules"><Trans>Routing Rules</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/route/routingStatistics') ? 'nav-link active' : 'nav-link' } to="/route/routingStatistics"><Trans>Routing Statistics</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/route/simulation') ? 'nav-link active' : 'nav-link' } to="/route/simulation"><Trans>Simulation</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/route/translationRules') ? 'nav-link active' : 'nav-link' } to="/route/translationRules"><Trans>Translation Rules</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/route/routingFeatures') ? 'nav-link active' : 'nav-link' } to="/route/routingFeatures"><Trans>Routing Features</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/route/routingRules') ? 'nav-link active' : 'nav-link' } to="/route/routingRules"><Trans>Routing Rules</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/route/routingStatistics') ? 'nav-link active' : 'nav-link' } to="/route/routingStatistics"><Trans>Routing Statistics</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/route/simulation') ? 'nav-link active' : 'nav-link' } to="/route/simulation"><Trans>Simulation</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/route/translationRules') ? 'nav-link active' : 'nav-link' } to="/route/translationRules"><Trans>Translation Rules</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>
@@ -279,24 +295,20 @@ class Sidebar extends Component {
 
 
 
-
-
-
-
            {/* Reports Section Starts Here*/}
 
-           <li className={ this.isPathActive('/icons') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.iconsMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('iconsMenuOpen') } data-toggle="collapse">
+           <li className={ isPathActive('/icons') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ menuState.iconsMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => toggleMenuState('iconsMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faFile} size="x" style={{ color: 'white' }} />
               </span>
               <span className="menu-title"><Trans>Reports</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.iconsMenuOpen }>
+            <Collapse in={ menuState.iconsMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/icons/mdi') ? 'nav-link active' : 'nav-link' } to="/icons/mdi"><Trans>Material</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/icons/mdi') ? 'nav-link active' : 'nav-link' } to="/icons/mdi"><Trans>Material</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>
@@ -307,27 +319,23 @@ class Sidebar extends Component {
 
 
 
-
-
-
-
            {/* Finance Section Starts Here */}
 
-           <li className={ this.isPathActive('/finance') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.FinanceMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('FinanceMenuOpen') } data-toggle="collapse">
+           <li className={ isPathActive('/finance') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ menuState.FinanceMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => toggleMenuState('FinanceMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <FontAwesomeIcon icon={faMoneyBill} size="x" style={{ color: 'green' }} />
               </span>
               <span className="menu-title"><Trans>Finance</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.FinanceMenuOpen }>
+            <Collapse in={ menuState.FinanceMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/finance/charges') ? 'nav-link active' : 'nav-link' } to="/finance/charges"><Trans>Charges</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/finance/invoice') ? 'nav-link active' : 'nav-link' } to="/finance/invoice"><Trans>Invoice</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/finance/payments') ? 'nav-link active' : 'nav-link' } to="/finance/payments"><Trans>Payments</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/finance/fees') ? 'nav-link active' : 'nav-link' } to="/finance/fees"><Trans>Recurring Fees</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/finance/charges') ? 'nav-link active' : 'nav-link' } to="/finance/charges"><Trans>Charges</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/finance/invoice') ? 'nav-link active' : 'nav-link' } to="/finance/invoice"><Trans>Invoice</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/finance/payments') ? 'nav-link active' : 'nav-link' } to="/finance/payments"><Trans>Payments</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/finance/fees') ? 'nav-link active' : 'nav-link' } to="/finance/fees"><Trans>Recurring Fees</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>
@@ -338,25 +346,21 @@ class Sidebar extends Component {
 
 
 
-
-
-
-
             {/* User Section Starts Here */}
 
-            <li className={ this.isPathActive('/user-pages') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.userPagesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('userPagesMenuOpen') } data-toggle="collapse">
+            <li className={ isPathActive('/user-pages') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ menuState.userPagesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => toggleMenuState('userPagesMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <i className="mdi mdi-security"></i>
               </span>
               <span className="menu-title"><Trans>User Pages</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.userPagesMenuOpen }>
+            <Collapse in={ menuState.userPagesMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/user-pages/login-1') ? 'nav-link active' : 'nav-link' } to="/user-pages/login-1"><Trans>Login</Trans></Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/user-pages/register-1') ? 'nav-link active' : 'nav-link' } to="/user-pages/register-1"><Trans>Register</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/user-pages/login-1') ? 'nav-link active' : 'nav-link' } to="/user-pages/login-1"><Trans>Login</Trans></Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/user-pages/register-1') ? 'nav-link active' : 'nav-link' } to="/user-pages/register-1"><Trans>Register</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>
@@ -373,19 +377,19 @@ class Sidebar extends Component {
           </li>
 
 
-          <li className={ this.isPathActive('/error-pages') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
-            <div className={ this.state.errorPagesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('errorPagesMenuOpen') } data-toggle="collapse">
+          <li className={ isPathActive('/error-pages') ? 'nav-item menu-items active' : 'nav-item menu-items' }>
+            <div className={ menuState.errorPagesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => toggleMenuState('errorPagesMenuOpen') } data-toggle="collapse">
               <span className="menu-icon">
                 <i className="mdi mdi-lock"></i>
               </span>
               <span className="menu-title"><Trans>Error Pages</Trans></span>
               <i className="menu-arrow"></i>
             </div>
-            <Collapse in={ this.state.errorPagesMenuOpen }>
+            <Collapse in={ menuState.errorPagesMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ this.isPathActive('/error-pages/error-404') ? 'nav-link active' : 'nav-link' } to="/error-pages/error-404">404</Link></li>
-                  <li className="nav-item"> <Link className={ this.isPathActive('/error-pages/error-500') ? 'nav-link active' : 'nav-link' } to="/error-pages/error-500">500</Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/error-pages/error-404') ? 'nav-link active' : 'nav-link' } to="/error-pages/error-404">404</Link></li>
+                  <li className="nav-item"> <Link className={ isPathActive('/error-pages/error-500') ? 'nav-link active' : 'nav-link' } to="/error-pages/error-500">500</Link></li>
                 </ul>
               </div>
             </Collapse>
@@ -401,31 +405,12 @@ class Sidebar extends Component {
         </ul>
       </nav>
     );
-  }
+  
 
-  isPathActive(path) {
-    return this.props.location.pathname.startsWith(path);
-  }
+  
 
-  componentDidMount() {
-    this.onRouteChanged();
-    // add class 'hover-open' to sidebar navitem while hover in sidebar-icon-only menu
-    const body = document.querySelector('body');
-    document.querySelectorAll('.sidebar .nav-item').forEach((el) => {
-      
-      el.addEventListener('mouseover', function() {
-        if(body.classList.contains('sidebar-icon-only')) {
-          el.classList.add('hover-open');
-        }
-      });
-      el.addEventListener('mouseout', function() {
-        if(body.classList.contains('sidebar-icon-only')) {
-          el.classList.remove('hover-open');
-        }
-      });
-    });
-  }
+
 
 }
 
-export default withRouter(Sidebar);
+export default Sidebar;
