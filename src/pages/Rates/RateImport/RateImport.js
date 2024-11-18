@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';  // Changed import to useHistory
 import './RateImport.css';
+import * as XLSX from 'xlsx'; // If using XLSX parsing
+import Papa from 'papaparse'; // If using CSV parsing
 
 const RateImport = () => {
   const [history, setHistory] = useState([]);
@@ -74,6 +76,55 @@ const RateImport = () => {
 
 
 
+ 
+// File parsing logic for CSV and XLSX files
+const parseFile = (file, type) => {
+
+  return new Promise((resolve, reject) => {
+
+    if (!(file instanceof File)) {
+      reject(new Error('The selected file is not a valid file.'));
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      try {
+        if (type === 'csv') {
+          
+          // Parse CSV
+          const parsedData = Papa.parse(reader.result, { header: true });
+          resolve(parsedData.data); // Resolve with parsed data
+        } else if (type === 'xlsx') {
+          
+          // Parse Excel (XLSX)
+          const wb = XLSX.read(reader.result, { type: 'binary' });
+          const sheet = wb.Sheets[wb.SheetNames[0]];
+          const parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+          resolve(parsedData); // Resolve with parsed data
+        } else {
+          reject(new Error('Unsupported file type'));
+        }
+      } catch (error) {
+        reject(error); // Reject with error if parsing fails
+      }
+    };
+
+    reader.onerror = () => {
+      reject(new Error('Error reading the file.'));
+    };
+
+    if (type === 'csv') {
+      reader.readAsText(file); // For CSV, read as text
+    } else if (type === 'xlsx') {
+      reader.readAsBinaryString(file); // For XLSX, read as binary string
+    } else {
+      reject(new Error('Unsupported file type'));
+    }
+  });
+};
+
 
   // Modal Form Section Starts Here
 
@@ -81,9 +132,11 @@ const RateImport = () => {
     const selectedFile = event.target.files[0];
     const allowedExtensions = ['csv', 'xls', 'xlsx'];
     const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+
     if (allowedExtensions.includes(fileExtension)) {
       setModalFile(selectedFile);
       setModalFileError(''); // Clear file error
+      console.log('Selected file in modal:', selectedFile);  // Log selected file
     } else {
       setModalFileError('Please select a valid file (CSV, XLS, XLSX).');
       event.target.value = ''; // Reset input field
@@ -134,13 +187,24 @@ const RateImport = () => {
         status: 'Import Failed', // Assuming status is "Importing" initially
         product: modalProduct,
         carrier: modalCarrier,
+        file: modalFile,  // Store the actual file object in the history entry
       };
+
+     // Log the modal file before saving to history
+     console.log('File submitted from modal:', modalFile);
+
 
       // Add the new history entry to the history state
       setHistory([newHistoryItem, ...history]);
 
+
+     // Set importFile and modalFile to the selected file
+      setImportFile(modalFile);
+      setModalFile(modalFile);
+
+
+   
       // Reset the modal form fields
-      setModalFile(null);
       setModalProduct('');
       setModalCarrier('');
       setModalFileError('');
@@ -200,7 +264,7 @@ const handleFormDirectionChange = (e) => {
 };
 
 
-const handleImportSubmit = (event) => {
+const handleImportSubmit = async (event) => {
   event.preventDefault();
   let isValid = true;
 
@@ -230,23 +294,56 @@ const handleImportSubmit = (event) => {
     isValid = false;
   }
 
-  // If form is valid, submit it
+  const file = modalFile; // This should be set in the modal file change handler
+
   if (isValid) {
-    const formData = {
-      file: importFile,
-      product: formProduct,
-      carrier: formCarrier,
-      parser: selectedParser,
-      direction,
-    };
-    console.log('Import form submitted with:', formData);
+    try {
+      setTaskResult('Parsing file...'); // Show parsing status
+      console.log('Import file:', importFile); // Ensure it's the correct file object
 
-    
-         navigate('/rates/import/ratesheet');
+      if (!(importFile instanceof File)) {
+        console.log('The selected file is not a valid file object');
+      }
+
+
+      let parsedData;
+      switch (selectedParser) {
+        case 'CSV':
+          parsedData = await parseFile(file, 'csv');
+          break;
+        case 'XLSX':
+          parsedData = await parseFile(file, 'xlsx');
+          break;
+        default:
+          throw new Error('Invalid parser selected');
+      }
+
+      // After parsing, display or process parsed data
+      console.log('Parsed Data:', parsedData);
+      setTaskResult('File parsed successfully!');
+
+      // Optionally, submit formData or navigate
+      const formData = {
+        file: importFile,
+        product: formProduct,
+        carrier: formCarrier,
+        parser: selectedParser,
+        direction,
+        parsedData,
+      };
+
+      console.log('Import form submitted with:', formData);
+
+     
+        // Pass parsed data as state during navigation
+        navigate('/rates/import/ratesheet', { state: { parsedData } });
+    } catch (error) {
+      console.error('Parsing error:', error);
+      setTaskResult(`Error: ${error.message}`);
+    }
   }
-
-
 };
+
 
 // Child2 Form Section Ends Here
 
@@ -294,9 +391,20 @@ const handleImportSubmit = (event) => {
     setFormCarrier(row.carrier);
 
 
-    setImportFile({
-      name: row.fileName,  // Assuming row has a fileName field
-    });
+   // Ensure modalFile is set to the correct file object here
+   const selectedFile = row.file;  // row should contains a 'file' object, not just the filename
+
+   setImportFile(selectedFile); // Set the correct file object
+   setModalFile(selectedFile);  // Also update modalFile if necessary
+ 
+
+      // Set parser based on the file extension
+      const fileExtension = row.fileName.split('.').pop().toLowerCase();
+      if (fileExtension === 'csv') {
+        setSelectedParser('CSV');
+      } else if (fileExtension === 'xls' || fileExtension === 'xlsx') {
+        setSelectedParser('XLSX');
+      }
 
 
     // Clear error messages since the form is auto-populated
@@ -306,6 +414,9 @@ const handleImportSubmit = (event) => {
     setParserError('');
     setDirectionError('');
   };
+
+
+
 
   const viewDetails = (taskId) => {
     console.log(`Viewing details for task ID: ${taskId}`);
@@ -323,6 +434,9 @@ const handleImportSubmit = (event) => {
       fontWeight: 'bold',
     };
   };
+
+
+
 
   return (
     <div className="rate-import-container">
@@ -407,12 +521,14 @@ const handleImportSubmit = (event) => {
             
              <div className="form-group" style={{ marginTop: '30px' }}>
                <label>Parser</label>
-               <select value={selectedParser} onChange={handleFormParserChange}>
+               <select value={selectedParser} onChange={handleFormParserChange} disabled={!!selectedParser}>
                <option value="" disabled>Select Parser</option>
-                <option value="xml">Internal Library</option>
+               <option value="CSV">CSV</option>
+               <option value="XLSX">XLSX</option>
                </select>
                {parserError && <p className="error-message">{parserError}</p>}
              </div>
+
 
              <div className="form-group">
                <label>Direction</label>
@@ -457,6 +573,7 @@ const handleImportSubmit = (event) => {
            </form>
 
              </div>
+
 
       </div>
 
