@@ -1,0 +1,85 @@
+/* Base styles for the pagination container */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Styles for each pagination item */
+  .pagination-controls .pager__item {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 2px;
+  }
+  
+  /* Active page styling */
+  .pagination-controls .pager__item.active .pager__link {
+    background-color: #ffb74d; /* Accent color */
+    border-color: #ffb74d;
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* Link styles */
+  .pagination-controls .pager__link {
+    position: relative;
+    border-radius: 4px;
+    display: block;
+    text-align: center;
+    width: 42px;
+    height: 42px;
+    line-height: 42px;
+    color: #2f3640; /* Text color */
+    text-decoration: none;
+    transition: 0.3s;
+  }
+  
+  .pagination-controls .pager__link:hover,
+  .pagination-controls .pager__link:focus,
+  .pagination-controls .pager__link:active {
+    background-color: #ffb74d;
+    border-color: #ffb74d;
+    color: white;
+  }
+  
+  /* Prev and Next buttons */
+  .pagination-controls .pager__item--prev,
+  .pagination-controls .pager__item--next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .pagination-controls .pager__item--next .pager__link {
+    transform: rotate(180deg);
+    transform-origin: center center;
+  }
+  
+  /* Disabled state for buttons */
+  .pagination-controls button:disabled {
+    background-color: #f1f1f1;
+    cursor: not-allowed;
+  }
+  
+  /* Spacing and styling of page number button */
+  .pagination-controls span {
+    font-size: 15px;
+    color: white;
+  }
+  
+  /* Responsiveness for small screens */
+  @media screen and (max-width: 576px) {
+    .pagination-controls .pager__item {
+      display: inline-block;
+      font-size: 16px;
+    }
+    .pagination-controls .pager__item.active {
+      font-weight: bold;
+      color: #ffb74d;
+    }
+  }
+  

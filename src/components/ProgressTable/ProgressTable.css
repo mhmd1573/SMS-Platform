@@ -17,8 +17,14 @@
   min-width: 0;
   color: white;
   font-weight: bold;
+  white-space: nowrap;
+  text-overflow: ellipsis; /* Add ellipsis if the text is too long */
+  overflow: hidden; /* Hide overflowed text */
 }
 
+.table th{
+  padding: 25px;
+}
 
 /* Style the entire scrollbar (Webkit browsers) */
 .table-wrapper::-webkit-scrollbar {

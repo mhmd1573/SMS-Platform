@@ -155,7 +155,7 @@
 
 .form-group label{
   color:#141d34;
-  /* padding-left: 10px; */
+
 }
 
 .modal-buttons button{
@@ -213,7 +213,7 @@
   align-items: center;
   gap: 10px;
   margin-top: 20px;
-  margin-top: 90px;
+  /* margin-top: 90px; */
 }
 
 .pagination-controls button {

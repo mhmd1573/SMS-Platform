@@ -13,7 +13,7 @@ const RateImport = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Items per page for pagination
+  const itemsPerPage = 10; // Items per page for pagination
 
   // File and form state for modal form
   const [modalFile, setModalFile] = useState(null);
@@ -126,6 +126,8 @@ const parseFile = (file, type) => {
 };
 
 
+
+
   // Modal Form Section Starts Here
 
   const handleModalFileChange = (event) => {
@@ -180,6 +182,7 @@ const parseFile = (file, type) => {
 
     // If form is valid, submit it
     if (isValid) {
+
       const newHistoryItem = {
         id: history.length + 1, // Incremental ID for the new history entry
         fileName: modalFile.name,
@@ -194,14 +197,18 @@ const parseFile = (file, type) => {
      console.log('File submitted from modal:', modalFile);
 
 
-      // Add the new history entry to the history state
-      setHistory([newHistoryItem, ...history]);
+     // Add the new history entry to the history state
+     const updatedHistory = [newHistoryItem, ...history];
+     setHistory(updatedHistory);
+
+
+     // Save the updated history array to local storage
+     localStorage.setItem('history', JSON.stringify(updatedHistory));
 
 
      // Set importFile and modalFile to the selected file
-      setImportFile(modalFile);
-      setModalFile(modalFile);
-
+     setImportFile(modalFile);
+     setModalFile(modalFile);
 
    
       // Reset the modal form fields
@@ -225,7 +232,6 @@ const parseFile = (file, type) => {
     setShowModal(false);
   };
 
-
   // Modal Form Section Ends Here
 
 
@@ -234,6 +240,15 @@ const parseFile = (file, type) => {
 
 
  // Child2 Form Section Starts Here
+
+ const handleFormFileChange = (event) => {
+  const selectedFile = event.target.files[0];
+  if (selectedFile) {
+    setImportFile(selectedFile); // Save the file object
+    console.log('Selected file:', selectedFile);
+  }
+};
+
 
  const handleFormProductChange = (e) => {
   setFormProduct(e.target.value);
@@ -297,12 +312,17 @@ const handleImportSubmit = async (event) => {
   const file = modalFile; // This should be set in the modal file change handler
 
   if (isValid) {
+
     try {
       setTaskResult('Parsing file...'); // Show parsing status
+      
       console.log('Import file:', importFile); // Ensure it's the correct file object
+      console.log('File is of type:', typeof importFile);
 
-      if (!(importFile instanceof File)) {
-        console.log('The selected file is not a valid file object');
+     if (importFile instanceof File) {
+        console.log('File is a valid File object');
+      } else {
+        console.log('File is NOT a valid File object');
       }
 
 
@@ -336,7 +356,7 @@ const handleImportSubmit = async (event) => {
 
      
         // Pass parsed data as state during navigation
-        navigate('/rates/import/ratesheet', { state: { parsedData } });
+        navigate('/rates/import/ratesheet', { state: { parsedData , formProduct } });
     } catch (error) {
       console.error('Parsing error:', error);
       setTaskResult(`Error: ${error.message}`);
@@ -383,20 +403,34 @@ const handleImportSubmit = async (event) => {
 
 
   const handleRowClick = (row) => {
+
+    // Retrieve history from local storage
+   const savedHistory = JSON.parse(localStorage.getItem('history')) || [];
+
+
+    // Set the selected row
     setSelectedRow(row);
+
+    // Set the direction (assumed to be 'vendor' for demonstration purposes)
     setDirection('vendor');
+
+    // Update carriers and products based on the selected row
     setCarriers([row.carrier]);
     setProducts([row.product]);
+
+    // Pre-fill the main form fields with the selected row's data
     setFormProduct(row.product);
     setFormCarrier(row.carrier);
 
 
-   // Ensure modalFile is set to the correct file object here
-   const selectedFile = row.file;  // row should contains a 'file' object, not just the filename
+        // Ensure modalFile is updated to match the file object in the selected row
+        if (row.file) {
+          setModalFile(row.file); // Set the modal file
+          setImportFile(row.file); // Sync the imported file
+        } else {
+          console.error('Selected row does not contain a valid file object.');
+        }
 
-   setImportFile(selectedFile); // Set the correct file object
-   setModalFile(selectedFile);  // Also update modalFile if necessary
- 
 
       // Set parser based on the file extension
       const fileExtension = row.fileName.split('.').pop().toLowerCase();
@@ -407,6 +441,11 @@ const handleImportSubmit = async (event) => {
       }
 
 
+
+       // Optional: log the selected row for debugging
+       console.log('Selected Row:', row);
+
+
     // Clear error messages since the form is auto-populated
     setImportFileError('');
     setImportProductError('');
@@ -414,9 +453,6 @@ const handleImportSubmit = async (event) => {
     setParserError('');
     setDirectionError('');
   };
-
-
-
 
   const viewDetails = (taskId) => {
     console.log(`Viewing details for task ID: ${taskId}`);
@@ -514,7 +550,7 @@ const handleImportSubmit = async (event) => {
 
              <div className="form-group" style={{ display: 'flex', alignItems: 'baseline' }}>
                <label>Selected File:</label>
-               <input className="file-input" type="text" value={file ? file.name : selectedRow ? selectedRow.fileName : ''} readOnly />
+               <input className="file-input" type="text" onChange={handleFormFileChange} value={file ? file.name : selectedRow ? selectedRow.fileName : ''} readOnly />
              </div>
              {importFileError && <p className="error-message">{importFileError}</p>}
             
@@ -579,7 +615,7 @@ const handleImportSubmit = async (event) => {
 
       <div className="child3">
           <h4>Import Result</h4>
-          <p>{taskResult}</p>
+          {/* <p>{taskResult}</p>
 
           <table className="history-table">
             <thead>
@@ -618,7 +654,7 @@ const handleImportSubmit = async (event) => {
           </table>
 
           {/* Pagination controls */}
-          <div className="pagination-controls">
+          {/* <div className="pagination-controls">
             <button onClick={handlePreviousPage} disabled={currentPage === 1}>
               Previous
             </button>
@@ -626,7 +662,9 @@ const handleImportSubmit = async (event) => {
             <button onClick={handleNextPage} disabled={currentPage >= Math.ceil(history.length / itemsPerPage)} >
               Next
             </button>
-          </div>
+          // </div> */} 
+
+
         </div>
 
 
