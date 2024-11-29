@@ -1,0 +1,37 @@
+
+
+
+.parent-carrier-carrier {
+    display: flex;
+    gap: 8px;
+}
+
+
+.parent-carrier-carrier .child1-carrier{
+    width: 60%;
+}
+
+
+
+
+/* General Table Styling */
+
+
+ thead.MuiTableHead-root {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: white; /* Optional: Set a background color */
+    white-space: no-wrap;
+  }
+  
+  .Mui-TableHeadCell-Content-Wrapper.MuiBox-root {
+    white-space: nowrap;
+    font-weight: bold;
+  }
+
+
+
+
+
+

@@ -198,10 +198,10 @@ const Sidebar = () => {
             <Collapse in={ menuState.carrierMenuOpen }>
               <div>
                 <ul className="nav flex-column sub-menu">
-                  <li className="nav-item"> <Link className={ isPathActive('/carriers/carriersList') ? 'nav-link active' : 'nav-link' } to="/carriers/carriersList">
-                  <Trans>Carriers List</Trans>
-                  </Link>
-                  </li>
+                <li className="nav-item"> <Link className={ isPathActive('/carriers/carriers') ? 'nav-link active' : 'nav-link' } to="/carriers/carriers"><Trans>Carriers</Trans></Link></li>
+                <li className="nav-item"> <Link className={ isPathActive('/carriers/accounts') ? 'nav-link active' : 'nav-link' } to="/carriers/accounts"><Trans>Accounts</Trans></Link></li>
+                <li className="nav-item"> <Link className={ isPathActive('/carriers/agreements') ? 'nav-link active' : 'nav-link' } to="/carriers/agreements"><Trans>Agreements</Trans></Link></li>
+                <li className="nav-item"> <Link className={ isPathActive('/carriers/products') ? 'nav-link active' : 'nav-link' } to="/carriers/products"><Trans>Products</Trans></Link></li>
                 </ul>
               </div>
             </Collapse>

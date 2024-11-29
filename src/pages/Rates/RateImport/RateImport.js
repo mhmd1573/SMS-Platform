@@ -15,6 +15,7 @@ const RateImport = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Items per page for pagination
 
+
   // File and form state for modal form
   const [modalFile, setModalFile] = useState(null);
   const [modalFileError, setModalFileError] = useState('');
@@ -34,6 +35,8 @@ const RateImport = () => {
   const [parserError, setParserError] = useState('');
   const [direction, setDirection] = useState('');
   const [directionError, setDirectionError] = useState('');
+  const [numberOfRows, setNumberOfRows] = useState(0); // Store the number of rows in the file
+
 
   // File input reference
   const fileInputRef = useRef(null);
@@ -79,9 +82,7 @@ const RateImport = () => {
  
 // File parsing logic for CSV and XLSX files
 const parseFile = (file, type) => {
-
   return new Promise((resolve, reject) => {
-
     if (!(file instanceof File)) {
       reject(new Error('The selected file is not a valid file.'));
       return;
@@ -91,21 +92,27 @@ const parseFile = (file, type) => {
 
     reader.onload = () => {
       try {
+        let parsedData = [];
+        let numberOfRows = 0;
+
         if (type === 'csv') {
-          
           // Parse CSV
-          const parsedData = Papa.parse(reader.result, { header: true });
-          resolve(parsedData.data); // Resolve with parsed data
+          const result = Papa.parse(reader.result, { header: true });
+          parsedData = result.data; // Parsed CSV data
+          numberOfRows = parsedData.length; // Set number of rows for CSV
         } else if (type === 'xlsx') {
-          
           // Parse Excel (XLSX)
           const wb = XLSX.read(reader.result, { type: 'binary' });
           const sheet = wb.Sheets[wb.SheetNames[0]];
-          const parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-          resolve(parsedData); // Resolve with parsed data
+          parsedData = XLSX.utils.sheet_to_json(sheet, { header: 0 }); // Convert sheet to JSON
+          numberOfRows = parsedData.length; // Set number of rows for XLSX
         } else {
           reject(new Error('Unsupported file type'));
+          return;
         }
+
+        // Resolve with parsed data, the number of rows, and the start row if required
+        resolve({ parsedData, numberOfRows });
       } catch (error) {
         reject(error); // Reject with error if parsing fails
       }
@@ -279,6 +286,94 @@ const handleFormDirectionChange = (e) => {
 };
 
 
+// const handleImportSubmit = async (event) => {
+//   event.preventDefault();
+//   let isValid = true;
+
+//   // Validate import form
+//   if (!importFile) {
+//     setImportFileError('Please select a file.');
+//     isValid = false;
+//   }
+
+//   if (!formProduct) {
+//     setImportProductError('Please select a product.');
+//     isValid = false;
+//   }
+
+//   if (!formCarrier) {
+//     setImportCarrierError('Please select a carrier.');
+//     isValid = false;
+//   }
+
+//   if (!selectedParser) {
+//     setParserError('Please select a parser.');
+//     isValid = false;
+//   }
+
+//   if (!direction) {
+//     setDirectionError('Please select a direction.');
+//     isValid = false;
+//   }
+
+//   const file = modalFile; // This should be set in the modal file change handler
+
+//   if (isValid) {
+
+//     try {
+//       setTaskResult('Parsing file...'); // Show parsing status
+      
+//       console.log('Import file:', importFile); // Ensure it's the correct file object
+//       console.log('File is of type:', typeof importFile);
+
+//      if (importFile instanceof File) {
+//         console.log('File is a valid File object');
+//       } else {
+//         console.log('File is NOT a valid File object');
+//       }
+
+
+//       let parsedData;
+//       switch (selectedParser) {
+//         case 'CSV':
+//           parsedData = await parseFile(file, 'csv');
+//           break;
+//         case 'XLSX':
+//           parsedData = await parseFile(file, 'xlsx');
+//           break;
+//         default:
+//           throw new Error('Invalid parser selected');
+//       }
+
+//       // After parsing, display or process parsed data
+//       console.log('Parsed Data:', parsedData);
+//       setTaskResult('File parsed successfully!');
+
+//       // Optionally, submit formData or navigate
+//       const formData = {
+//         file: importFile,
+//         product: formProduct,
+//         carrier: formCarrier,
+//         parser: selectedParser,
+//         direction,
+//         parsedData,
+//       };
+
+//       console.log('Import form submitted with:', formData);
+
+     
+//         // Pass parsed data as state during navigation
+//         navigate('/rates/import/ratesheet', { state: { parsedData , formProduct , importFile } });
+//     } catch (error) {
+//       console.error('Parsing error:', error);
+//       setTaskResult(`Error: ${error.message}`);
+//     }
+//   }
+// };
+
+
+
+
 const handleImportSubmit = async (event) => {
   event.preventDefault();
   let isValid = true;
@@ -309,34 +404,30 @@ const handleImportSubmit = async (event) => {
     isValid = false;
   }
 
-  const file = modalFile; // This should be set in the modal file change handler
-
   if (isValid) {
-
     try {
       setTaskResult('Parsing file...'); // Show parsing status
-      
-      console.log('Import file:', importFile); // Ensure it's the correct file object
-      console.log('File is of type:', typeof importFile);
-
-     if (importFile instanceof File) {
-        console.log('File is a valid File object');
-      } else {
-        console.log('File is NOT a valid File object');
-      }
-
 
       let parsedData;
+      let numberOfRows;
+
       switch (selectedParser) {
         case 'CSV':
-          parsedData = await parseFile(file, 'csv');
+          const csvResult = await parseFile(importFile, 'csv');
+          parsedData = csvResult.parsedData;
+          numberOfRows = csvResult.numberOfRows;
           break;
         case 'XLSX':
-          parsedData = await parseFile(file, 'xlsx');
+          const xlsxResult = await parseFile(importFile, 'xlsx');
+          parsedData = xlsxResult.parsedData;
+          numberOfRows = xlsxResult.numberOfRows;
           break;
         default:
           throw new Error('Invalid parser selected');
       }
+
+      // Update the state with the number of rows
+      setNumberOfRows(numberOfRows);
 
       // After parsing, display or process parsed data
       console.log('Parsed Data:', parsedData);
@@ -354,15 +445,19 @@ const handleImportSubmit = async (event) => {
 
       console.log('Import form submitted with:', formData);
 
-     
-        // Pass parsed data as state during navigation
-        navigate('/rates/import/ratesheet', { state: { parsedData , formProduct } });
+      // Pass parsed data as state during navigation
+      navigate('/rates/import/ratesheet', { state: { parsedData, formProduct, importFile, numberOfRows } });
     } catch (error) {
       console.error('Parsing error:', error);
       setTaskResult(`Error: ${error.message}`);
     }
   }
 };
+
+
+
+
+
 
 
 // Child2 Form Section Ends Here

@@ -28,43 +28,12 @@
     width: 62%;
   }
 
-  
-
-
-
-/* Style the entire scrollbar (Webkit browsers) */ 
-.table-wrapper::-webkit-scrollbar {
-  width: 40px; /* Adjust the width of the scrollbar */
-   height: 45px;  /* Adjust the height of the horizontal scrollbar */
-}
-
-/* Track (the empty space the scrollbar moves along) */
-.table-wrapper::-webkit-scrollbar-track {
-  background-color: #333; /* Track color */
-  border-radius: 6px; /* Round the corners of the track */
-}
-
-/* Handle (the draggable part of the scrollbar) */
-.table-wrapper::-webkit-scrollbar-thumb {
-  background-color: #888; /* Scrollbar thumb color */
-  border-radius: 6px; /* Round the corners of the thumb */
-  border: 2px solid #333; /* Border around the thumb */
-}
-
-/* Hover effect for the thumb (Webkit browsers) */
-.table-wrapper::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Darker color on hover */
-}
-
-/* Firefox scrollbar styles */
-.table-wrapper {
-  scrollbar-width: thin; /* Thin scrollbar */
-  scrollbar-color: #888 #333; /* Scrollbar color (thumb and track) */
-}
-
-
 
 /* Child1 Table Section Ends Here */
+
+
+
+
 
 
 
@@ -73,13 +42,11 @@
 
   .form-container{
     width: 100%; /* or set a specific width */
-    max-height: 793px; /* Adjust this height as needed */
+    max-height: 550px; /* Adjust this height as needed */
     overflow-y: auto; /* Add vertical scroll bar */
     overflow-x: hidden; /*Prevent horizontal scrolling*/
-    direction: ltr; /* Switch scroll bar to the left */
     border: 1px solid #ccc; /* Optional: Add a border for styling */
     padding: 15px;
-    border-radius: 8px; /* Optional: Rounded corners */
     background-color: #f9f9f9; /* Optional: Light background */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
   }
@@ -295,19 +262,21 @@
 
 
 
-
+.parent-log{
+  display: flex;
+  gap: 10px;
+}
 
 
 
 
 .child1-log{
   border: 1px solid white;
-  width: 45%;
+  width: 55%;
 }
 
 
 .child2-log{
   border: 1px solid white;
-  width: 55%;
-  height: 400px;
+  width: 47%;
 } 

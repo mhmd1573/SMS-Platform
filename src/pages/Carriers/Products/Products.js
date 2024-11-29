@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import './Products.css'
 
 
-
-export class CarriersList extends Component {
+export class Products extends Component {
 
   render() {
     return (
@@ -11,11 +11,11 @@ export class CarriersList extends Component {
      <div>
       
         <div className="page-header">
-          <h3 className="page-title"> Carriers List</h3>
+          <h3 className="page-title"> Carriers</h3>
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
               <li className="breadcrumb-item"><a href="!#" onClick={event => event.preventDefault()}>Carriers</a></li>
-              <li className="breadcrumb-item active" aria-current="page">Carriers List</li>
+              <li className="breadcrumb-item active" aria-current="page">Products</li>
             </ol>
           </nav>
         </div>
@@ -26,4 +26,4 @@ export class CarriersList extends Component {
   }
 }
 
-export default CarriersList
+export default Products

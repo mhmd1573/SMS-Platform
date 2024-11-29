@@ -1,7 +1,7 @@
 export {default as SMS} from './Analysis/SMS'
 export {default as Test} from './Analysis/Tests'
 
-export {default as CarriersList} from './Carriers/CarriersList'
+export {default as Carriers} from './Carriers/Carriers/Carriers'
 
 
 export {default as Charges} from './Finance/Charges'
