@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 
 
-export class RateEditor extends Component {
+ const RateEditor = () => {
 
-  render() {
+
     return (
    
    
@@ -23,7 +23,7 @@ export class RateEditor extends Component {
       </div>
 
     )
-  }
+  
 }
 
 export default RateEditor
